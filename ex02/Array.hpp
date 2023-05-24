@@ -24,15 +24,13 @@ class Array
 			try
 			{
 				this->array_ = new T[n];
-				if (this->array_ == nullptr)
-					throw std::exception();
 				for (unsigned int iter = 0; iter < n; iter++)
 				{
 					this->array_[iter] = 0;
 				}
 				this->len = n;
 			}
-			catch(const std::exception& e)
+			catch(const std::bad_alloc& e)
 			{
 				std::cerr << e.what() << '\n';
 				this->array_ = nullptr;
@@ -49,16 +47,24 @@ class Array
 
 		Array(const Array& source)
 		{
+			this->array_ = nullptr;
+			this->len = 0;
 			if (source.len == 0)
 			{
-				this->array_ = nullptr;
-				this->len = 0;
 				return ;
 			}
-			this->array_ = new T[source.len];
-			for (unsigned int iter = 0; iter < source.len; iter++)
+			try
 			{
-				this->array_[iter] = 0;
+				this->array_ = new T[source.len];
+				for (unsigned int iter = 0; iter < source.len; iter++)
+				{
+					this->array_[iter] = source.array_[iter];
+				}
+				this->len = source.len;
+			}
+			catch(const std::bad_alloc& e)
+			{
+				std::cerr << e.what() << '\n';
 			}
 		}
 
@@ -74,42 +80,36 @@ class Array
 			{
 				delete[] this->array_;
 			}
-			this->array_ = new T[source.len];
-			for (unsigned int iter = 0; iter < source.len; iter++)
+			try
 			{
-				this->array_[iter] = 0;
+				this->array_ = new T[source.len];
+				for (unsigned int iter = 0; iter < source.len; iter++)
+				{
+					this->array_[iter] = source.array_[iter];
+				}
+				this->len = source.len;
+			}
+			catch(const std::bad_alloc& e)
+			{
+				std::cerr << e.what() << '\n';
 			}
 			return (*this);
 		}
 
 		T&	operator[](unsigned int n)
 		{
-			try
+			if (n >= this->len)
 			{
-				if (n >= this->len)
-				{
-					throw std::exception();
-				}
+				throw std::exception();
 			}
-			catch(...)
-			{
-				throw ;
-			}
-			return (this->array_[n]);
+			return (this->array_[n]); 
 		}
 
 		const T& operator[](unsigned int n) const
 		{
-			try
+			if (n >= this->len)
 			{
-				if (n >= this->len)
-				{
-					throw std::exception();
-				}
-			}
-			catch(...)
-			{
-				throw ;
+				throw std::exception();
 			}
 			return (this->array_[n]);
 		}
