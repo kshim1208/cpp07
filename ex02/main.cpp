@@ -1,7 +1,5 @@
 #include "Array.hpp"
 
-#include <random>
-
 int main()
 {
 	Array<int>		int_arr_0;
