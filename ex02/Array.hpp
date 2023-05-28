@@ -15,7 +15,7 @@ class Array
 	public:
 		Array()
 		{
-			this->array_ = nullptr;
+			this->array_ = 0;
 			this->len = 0;
 		};
 
@@ -33,7 +33,7 @@ class Array
 			catch(const std::bad_alloc& e)
 			{
 				std::cerr << e.what() << '\n';
-				this->array_ = nullptr;
+				this->array_ = 0;
 				this->len = 0;
 			}
 		}
@@ -41,13 +41,13 @@ class Array
 		~Array()
 		{
 			this->len = 0;
-			if (this->array_ != nullptr)
+			if (this->array_ != 0)
 				delete[] this->array_;
 		};
 
 		Array(const Array& source)
 		{
-			this->array_ = nullptr;
+			this->array_ = 0;
 			this->len = 0;
 			if (source.len == 0)
 			{
@@ -72,11 +72,11 @@ class Array
 		{
 			if (source.len == 0)
 			{
-				this->array_ = nullptr;
+				this->array_ = 0;
 				this->len = 0;
 				return (*this);
 			}
-			if (this->array_ != nullptr)
+			if (this->array_ != 0)
 			{
 				delete[] this->array_;
 			}
